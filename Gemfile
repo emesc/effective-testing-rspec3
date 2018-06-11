@@ -7,4 +7,6 @@ source "https://rubygems.org"
 gem 'rspec'
 gem 'coderay'
 gem 'rack-test'
-gem 'sinatra'
+gem 'sinatra', '~> 2.0.2'
+gem 'sequel'
+gem 'sqlite3'

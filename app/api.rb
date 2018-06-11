@@ -1,13 +1,9 @@
 require 'sinatra/base'
 require 'json'
+require_relative 'ledger'
 
 module ExpenseTracker
   class API < Sinatra::Base
-    def initialize(ledger:)
-      @ledger = ledger
-      super() # rest of initialization from Sinatra
-    end
-
     post '/expenses' do
       expense = JSON.parse(request.body.read)
       result = @ledger.record(expense)
@@ -22,6 +18,11 @@ module ExpenseTracker
 
     get '/expenses/:date' do
       @ledger.expenses_on(params[:date])
+    end
+
+    def initialize(ledger: Ledger.new)
+      @ledger = ledger
+      super()  # rest of initialization from sinatra
     end
   end
 end

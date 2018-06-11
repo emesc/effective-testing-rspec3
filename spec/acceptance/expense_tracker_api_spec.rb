@@ -15,37 +15,35 @@ module ExpenseTracker
       expect(last_response.status).to eq 200
 
       parsed = JSON.parse(last_response.body)
-      expect(parsed).to include({ 'expense_id' => a_kind_of(Integer) })
+      expect(parsed).to include('expense_id' => a_kind_of(Integer))
       expense.merge('id' => parsed['expense_id'])
     end
 
     it 'records submitted expenses' do
-      # pending <message>: RSpec still runs and gives the outputs but in progress state
       pending 'Need to persist expenses'
+
       coffee = post_expense(
-        'payee'   => 'Starbucks',
-        'amount'  => 5.75,
-        'date'    => '2017-06-10'
+        'payee' => 'Starbucks',
+        'amount' => 5.75,
+        'date' => '2017-06-10'
       )
 
       zoo = post_expense(
-        'payee'   => 'Zoo',
-        'amount'  => 15.25,
-        'date'    => '2017-06-10' 
+        'payee' => 'Zoo',
+        'amount' => 15.25,
+        'date' => '2017-06-10'
       )
 
       groceries = post_expense(
-        'payee'   => 'Whole Foods',
-        'amount'  => 95.20,
-        'date'    => '2017-06-11'
+        'payee' => 'Whole Foods',
+        'amount' => 95.20,
+        'date' => '2017-06-11'
       )
 
       get '/expenses/2017-06-10'
       expect(last_response.status).to eq 200
 
       expenses = JSON.parse(last_response.body)
-      # contain_exactly: a collection matcher that doesn't care about the order
-      # eq[coffee, zoo]: a collection matcher that cares about the order
       expect(expenses).to contain_exactly(coffee, zoo)
     end
   end
