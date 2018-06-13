@@ -4,6 +4,11 @@ require_relative 'ledger'
 
 module ExpenseTracker
   class API < Sinatra::Base
+    def initialize(ledger: Ledger.new)
+      @ledger = ledger
+      super()
+    end
+
     post '/expenses' do
       expense = JSON.parse(request.body.read)
       result = @ledger.record(expense)
@@ -17,12 +22,8 @@ module ExpenseTracker
     end
 
     get '/expenses/:date' do
-      @ledger.expenses_on(params[:date])
-    end
-
-    def initialize(ledger: Ledger.new)
-      @ledger = ledger
-      super()  # rest of initialization from sinatra
+      result = @ledger.expenses_on(params[:date])
+      result.is_a?(String) ? result : JSON.generate(result)
     end
   end
 end
