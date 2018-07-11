@@ -25,5 +25,6 @@ module ExpenseTracker
       result = @ledger.expenses_on(params[:date])
       result.is_a?(String) ? result : JSON.generate(result)
     end
+    puts 'testing git'
   end
 end
